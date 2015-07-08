@@ -8,15 +8,17 @@ module CC
 
       def initialize(directory:, config_path:, io: STDOUT)
         self.directory = directory
-        self.engine_config = JSON.parse config_path
-        # self.engine_config = parse_config(config_path)
+        self.engine_config = parse_config(config_path)
         self.cli = ::SCSSLint::CLI.new
       end
 
       def run
         options = scss_lint_options
         Dir.chdir(directory) do
-          cli.send(:act_on_options, options)
+          begin
+            cli.send(:act_on_options, options)
+          rescue ::SCSSLint::Exceptions::NoFilesError
+          end
         end
       end
 
@@ -34,12 +36,11 @@ module CC
           files: [], # execute SCSSLint::CLI in the `directory` path
           excluded_files: excluded_files
         }
+
         if engine_config["config"]
           options[:config_file] = engine_config["config"]
         end
-        # if engine_config["config"] && File.exists?(engine_config["config"])
-        #   options[:config_file] = File.join(directory, engine_config["config"])
-        # end
+
         options
       end
 
