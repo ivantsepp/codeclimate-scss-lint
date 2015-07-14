@@ -24,7 +24,9 @@ class TestSCSSLint < Minitest::Test
       )
     )
 
-    CC::Engine::SCSSLint.new(directory: File.dirname(__FILE__), config_path: '{"exclude_paths":["somefile.scss"]}').run
+    with_config_file_contents('{"exclude_paths":["somefile.scss"]}') do |path|
+      CC::Engine::SCSSLint.new(directory: File.dirname(__FILE__), config_path: path).run
+    end
   end
 
   def test_run_invokes_cli_with_config
@@ -38,6 +40,8 @@ class TestSCSSLint < Minitest::Test
       )
     )
 
-    CC::Engine::SCSSLint.new(directory: File.dirname(__FILE__), config_path: '{"config":"somefile.scss"}').run
+    with_config_file_contents('{"config":"somefile.scss"}') do |path|
+      CC::Engine::SCSSLint.new(directory: File.dirname(__FILE__), config_path: path).run
+    end
   end
 end

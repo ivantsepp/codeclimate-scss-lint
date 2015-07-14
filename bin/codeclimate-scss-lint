@@ -5,5 +5,5 @@ require 'cc/engine/scss-lint'
 
 CC::Engine::SCSSLint.new(
   directory: "/code",
-  config_path: ENV["ENGINE_CONFIG"]
+  config_path: "/config.json"
 ).run
