@@ -3,9 +3,10 @@ module SCSSLint
 
     def report_lints
       lints.map do |lint|
+        linter_name = lint.linter ? lint.linter.name : "Error"
         {
           type: "issue",
-          check_name: lint.linter.name,
+          check_name: linter_name,
           description: lint.description,
           categories: ["Style"],
           remediation_points: 50_000,
