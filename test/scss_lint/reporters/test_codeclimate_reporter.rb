@@ -8,7 +8,7 @@ class TestCodeclimateReporter < Minitest::Test
       description: "`0px` should be written without units as `0`",
       filename: "test.scss"
     )
-    output = SCSSLint::Reporter::CodeclimateReporter.new([lint]).report_lints
+    output = SCSSLint::Reporter::CodeclimateReporter.new([lint], []).report_lints
     output_hash = JSON.parse(output)
     assert_equal "issue", output_hash["type"]
     assert_equal "BorderZero", output_hash["check_name"]
