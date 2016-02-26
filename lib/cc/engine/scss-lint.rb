@@ -9,7 +9,7 @@ module CC
       def initialize(directory:, config_path:, io: STDOUT)
         self.directory = directory
         self.engine_config = parse_config(config_path)
-        self.cli = ::SCSSLint::CLI.new
+        self.cli = ::SCSSLint::CLI.new(::SCSSLint::Logger.new(STDERR))
       end
 
       def run
