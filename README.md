@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ivantsepp/codeclimate-scss-lint.svg?branch=source)](https://travis-ci.org/ivantsepp/codeclimate-scss-lint)
+
 # Code Climate SCSS-Lint Engine
 
 This is a code climate engine that wraps [`scss-lint`](https://github.com/brigade/scss-lint) tool which is a linter for scss/sass.
