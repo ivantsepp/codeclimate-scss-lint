@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ivantsepp/codeclimate-scss-lint.svg?branch=source)](https://travis-ci.org/ivantsepp/codeclimate-scss-lint)
+[![Build Status](https://travis-ci.org/ivantsepp/codeclimate-scss-lint.svg?branch=master)](https://travis-ci.org/ivantsepp/codeclimate-scss-lint)
 
 # Code Climate SCSS-Lint Engine
 
