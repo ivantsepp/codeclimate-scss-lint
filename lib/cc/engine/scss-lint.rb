@@ -27,14 +27,12 @@ module CC
       attr_accessor :directory, :engine_config, :cli
 
       def scss_lint_options
-        excluded_files = Array(engine_config["exclude_paths"])
         options = {
           reporters: [
             ["Codeclimate", :stdout]
           ],
           required_paths: [], # the codeclimate report is required above
-          files: [], # execute SCSSLint::CLI in the `directory` path
-          excluded_files: excluded_files
+          files: sanitized_include_paths
         }
 
         if engine_config["config"]
@@ -46,6 +44,12 @@ module CC
 
       def parse_config(config_path)
         File.exists?(config_path) ? JSON.parse(File.read(config_path)) : {}
+      end
+
+      def sanitized_include_paths
+        Array(engine_config["include_paths"]).select do |path|
+          path.end_with?("/") || path.end_with?(".scss")
+        end
       end
 
     end

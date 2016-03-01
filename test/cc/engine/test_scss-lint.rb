@@ -6,8 +6,7 @@ class TestSCSSLint < Minitest::Test
       has_entries(
         reporters: [["Codeclimate", :stdout]],
         required_paths: [],
-        files: [],
-        excluded_files: []
+        files: []
       )
     )
 
@@ -19,12 +18,21 @@ class TestSCSSLint < Minitest::Test
       has_entries(
         reporters: [["Codeclimate", :stdout]],
         required_paths: [],
-        files: [],
-        excluded_files: ['somefile.scss']
+        files: ["somefile.scss", "a_dir/"]
       )
     )
 
-    with_config_file_contents('{"exclude_paths":["somefile.scss"]}') do |path|
+    config_contents = <<-JSON
+    {
+      "include_paths": [
+        "somefile.scss",
+        "a_dir/",
+        "not-scss.rb"
+      ]
+    }
+    JSON
+
+    with_config_file_contents(config_contents) do |path|
       CC::Engine::SCSSLint.new(directory: File.dirname(__FILE__), config_path: path).run
     end
   end
@@ -35,7 +43,6 @@ class TestSCSSLint < Minitest::Test
         reporters: [["Codeclimate", :stdout]],
         required_paths: [],
         files: [],
-        excluded_files: [],
         config_file: "somefile.scss"
       )
     )
