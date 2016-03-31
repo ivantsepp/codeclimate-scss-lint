@@ -1,11 +1,11 @@
 require 'scss_lint'
 require 'scss_lint/cli'
+require 'scss_lint/file_finder'
 require 'scss_lint/reporters/codeclimate_reporter'
 
 module CC
   module Engine
     class SCSSLint
-
       def initialize(directory:, config_path:, io: STDOUT)
         self.directory = directory
         self.engine_config = parse_config(config_path)
@@ -14,10 +14,12 @@ module CC
 
       def run
         options = scss_lint_options
-        Dir.chdir(directory) do
-          begin
-            cli.send(:act_on_options, options)
-          rescue ::SCSSLint::Exceptions::NoFilesError
+        if options[:files] && options[:files].count > 0
+          Dir.chdir(directory) do
+            begin
+              cli.send(:act_on_options, options)
+            rescue ::SCSSLint::Exceptions::NoFilesError
+            end
           end
         end
       end
@@ -47,11 +49,15 @@ module CC
       end
 
       def sanitized_include_paths
-        Array(engine_config["include_paths"]).select do |path|
-          path.end_with?("/") || path.end_with?(".scss")
+        valid_extensions = ::SCSSLint::FileFinder::VALID_EXTENSIONS
+        include_paths.select do |path|
+          path.end_with?("/") || valid_extensions.include?(File.extname(path))
         end
       end
 
+      def include_paths
+        engine_config.fetch("include_paths", ["./"])
+      end
     end
   end
 end
