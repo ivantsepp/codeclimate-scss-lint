@@ -6,7 +6,7 @@ class TestSCSSLint < Minitest::Test
       has_entries(
         reporters: [["Codeclimate", :stdout]],
         required_paths: [],
-        files: []
+        files: ["./"]
       )
     )
 
@@ -37,12 +37,26 @@ class TestSCSSLint < Minitest::Test
     end
   end
 
+  def test_skip_run_if_no_files_to_analyze
+    ::SCSSLint::CLI.any_instance.expects(:act_on_options).never
+
+    config_contents = <<-JSON
+    {
+      "include_paths": ["not-scss.rb"]
+    }
+    JSON
+
+    with_config_file_contents(config_contents) do |path|
+      CC::Engine::SCSSLint.new(directory: File.dirname(__FILE__), config_path: path).run
+    end
+  end
+
   def test_run_invokes_cli_with_config
     ::SCSSLint::CLI.any_instance.expects(:act_on_options).with(
       has_entries(
         reporters: [["Codeclimate", :stdout]],
         required_paths: [],
-        files: [],
+        files: ["./"],
         config_file: "somefile.scss"
       )
     )
