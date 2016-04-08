@@ -2,9 +2,9 @@ module SCSSLint
   class Reporter::CodeclimateReporter < Reporter
 
     def report_lints
-      lints.map do |lint|
+      lints.each do |lint|
         linter_name = lint.linter ? lint.linter.name : "Error"
-        {
+        issue_json = {
           type: "issue",
           check_name: linter_name,
           description: lint.description,
@@ -24,7 +24,9 @@ module SCSSLint
             }
           }
         }.to_json
-      end.join("\0")
+        $stdout.print("#{issue_json}\0")
+      end
+      nil
     end
 
   end
