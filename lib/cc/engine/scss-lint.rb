@@ -41,6 +41,12 @@ module CC
           options[:config_file] = engine_config["config"]
         end
 
+        Dir.chdir(directory) do
+          if (user_specified_scss_files = cli.send(:setup_configuration, options).scss_files).any?
+            options[:files] = user_specified_scss_files
+          end
+        end
+
         options
       end
 
