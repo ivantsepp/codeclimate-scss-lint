@@ -52,17 +52,19 @@ class TestSCSSLint < Minitest::Test
   end
 
   def test_run_invokes_cli_with_config
-    ::SCSSLint::CLI.any_instance.expects(:act_on_options).with(
-      has_entries(
-        reporters: [["Codeclimate", :stdout]],
-        required_paths: [],
-        files: ["./"],
-        config_file: "somefile.scss"
+    Tempfile.open('somefile.yml', File.dirname(__FILE__)) do |f|
+      ::SCSSLint::CLI.any_instance.expects(:act_on_options).with(
+        has_entries(
+          reporters: [["Codeclimate", :stdout]],
+          required_paths: [],
+          files: ["./"],
+          config_file: File.basename(f.path)
+        )
       )
-    )
 
-    with_config_file_contents('{"config":"somefile.scss"}') do |path|
-      CC::Engine::SCSSLint.new(directory: File.dirname(__FILE__), config_path: path).run
+      with_config_file_contents('{"config":"' + File.basename(f.path) + '"}') do |path|
+        CC::Engine::SCSSLint.new(directory: File.dirname(__FILE__), config_path: path).run
+      end
     end
   end
 end
