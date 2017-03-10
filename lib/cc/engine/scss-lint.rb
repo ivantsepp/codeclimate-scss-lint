@@ -42,12 +42,19 @@ module CC
         end
 
         Dir.chdir(directory) do
-          if (user_specified_scss_files = cli.send(:setup_configuration, options).scss_files).any?
-            options[:files] = user_specified_scss_files
+          if (scss_lint_config = cli.send(:setup_configuration, options)).scss_files.any?
+            user_specified_scss_files = ::SCSSLint::FileFinder.new(scss_lint_config).find(scss_lint_config.scss_files)
+            options[:files] = filter_by_sanitized_include_paths(user_specified_scss_files)
           end
         end
 
         options
+      end
+
+      def filter_by_sanitized_include_paths(files)
+        files.select do |file|
+          file.start_with?(*sanitized_include_paths)
+        end
       end
 
       def parse_config(config_path)
@@ -55,8 +62,10 @@ module CC
       end
 
       def sanitized_include_paths
+        return @sanitized_include_paths unless @sanitized_include_paths.nil?
+
         valid_extensions = ::SCSSLint::FileFinder::VALID_EXTENSIONS
-        include_paths.select do |path|
+        @sanitized_include_paths = include_paths.select do |path|
           path.end_with?("/") || valid_extensions.include?(File.extname(path))
         end
       end
