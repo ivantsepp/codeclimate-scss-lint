@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem "scss_lint", '0.52.0', require: false
+gem "scss_lint", '0.54.0', require: false
 
 group :development do
   gem "pry", require: false
