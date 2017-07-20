@@ -20,8 +20,8 @@ GEM
       slop (~> 3.4)
     rake (10.4.2)
     ruby-progressbar (1.7.5)
-    sass (3.4.23)
-    scss_lint (0.52.0)
+    sass (3.4.25)
+    scss_lint (0.54.0)
       rake (>= 0.9, < 13)
       sass (~> 3.4.20)
     slop (3.6.0)
@@ -35,7 +35,7 @@ DEPENDENCIES
   mocha
   pry
   rake
-  scss_lint (= 0.52.0)
+  scss_lint (= 0.54.0)
 
 BUNDLED WITH
    1.14.3
