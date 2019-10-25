@@ -1,4 +1,4 @@
-FROM codeclimate/alpine-ruby:b38
+FROM ruby:2-alpine
 
 WORKDIR /usr/src/app
 COPY Gemfile /usr/src/app/
